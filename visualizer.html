@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Race Condition Visualizer</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+    font-size: 14px;
+  }
+
+  h1 {
+    color: #333;
+    margin-bottom: 4px;
+  }
+
+  p.subtitle {
+    color: #666;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .box {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+
+  /* mode buttons */
+  .mode-btns { margin-bottom: 14px; }
+  .mode-btn {
+    padding: 6px 14px;
+    margin-right: 6px;
+    border: 1px solid #999;
+    background: #eee;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .mode-btn.active { background: #333; color: white; border-color: #333; }
+
+  /* controls */
+  table.ctrl-table { border-collapse: collapse; }
+  table.ctrl-table td { padding: 4px 10px 4px 0; vertical-align: middle; font-size: 13px; }
+  table.ctrl-table input[type=range] { width: 160px; }
+  .ctrl-val { color: #0055cc; font-weight: bold; min-width: 50px; display: inline-block; }
+
+  .run-btns { margin-top: 10px; }
+  .run-btns button {
+    padding: 6px 18px;
+    margin-right: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    border: 1px solid #999;
+    background: #eee;
+  }
+  .run-btns button.primary { background: #0055cc; color: white; border-color: #0055cc; }
+  .run-btns button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* alert */
+  .alert { padding: 8px 12px; margin-bottom: 12px; font-size: 13px; display: none; border: 1px solid; }
+  .alert.visible { display: block; }
+  .alert.danger  { background: #fff0f0; border-color: red;   color: red; }
+  .alert.success { background: #f0fff0; border-color: green; color: green; }
+
+  /* stats table */
+  table.stats-table { border-collapse: collapse; width: 100%; }
+  table.stats-table td { border: 1px solid #ccc; padding: 6px 10px; text-align: center; }
+  table.stats-table tr:first-child td { background: #eee; font-weight: bold; font-size: 12px; }
+  .val-good { color: green; font-weight: bold; font-size: 18px; }
+  .val-bad  { color: red;   font-weight: bold; font-size: 18px; }
+  .val-info { color: #0055cc; font-weight: bold; font-size: 18px; }
+
+  /* counter */
+  .counter-num {
+    font-size: 52px;
+    font-weight: bold;
+    color: #0055cc;
+    display: inline-block;
+    min-width: 80px;
+  }
+  .counter-num.race      { color: red; }
+  .counter-num.safe-write{ color: green; }
+  .counter-expected { font-size: 13px; color: #666; margin-top: 4px; }
+
+  .progress-bg {
+    background: #ddd;
+    border: 1px solid #bbb;
+    height: 14px;
+    margin-top: 8px;
+    width: 100%;
+    max-width: 400px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #0055cc;
+    transition: width 0.2s;
+  }
+  .progress-fill.race-mode  { background: red; }
+  .progress-fill.mutex-mode { background: green; }
+  .progress-fill.sem-mode   { background: purple; }
+
+  /* thread grid */
+  .threads-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .thread-card {
+    border: 1px solid #ccc;
+    background: white;
+    padding: 10px;
+    width: 150px;
+    font-size: 12px;
+  }
+  .thread-card.active  { border-color: #0055cc; }
+  .thread-card.locked  { border-color: green; }
+  .thread-card.waiting { border-color: orange; }
+  .thread-card.racing  { border-color: red; }
+  .thread-card.done    { opacity: 0.5; }
+
+  .t-state { font-weight: bold; margin: 4px 0; font-size: 13px; }
+  .t-state.READ      { color: #0055cc; }
+  .t-state.WRITE     { color: green; }
+  .t-state.WRITE.race{ color: red; }
+  .t-state.LOCKED    { color: green; }
+  .t-state.WAIT_LOCK { color: orange; }
+  .t-state.WAIT_SEM  { color: orange; }
+  .t-state.SEM_ACQUIRED { color: purple; }
+  .t-state.DONE      { color: #999; }
+
+  .thread-progress-bg   { background: #ddd; height: 5px; margin-top: 6px; }
+  .thread-progress-fill { height: 100%; background: #0055cc; transition: width 0.3s; }
+
+  /* ASCII timeline */
+  .ascii-row { display: flex; align-items: center; gap: 6px; margin: 2px 0; font-family: monospace; font-size: 12px; }
+  .ascii-tid  { color: #0055cc; width: 40px; text-align: right; }
+  .ascii-bar span { display: inline-block; width: 10px; text-align: center; }
+  .ev-R { color: #0055cc; }
+  .ev-W { color: green; }
+  .ev-X { color: red; font-weight: bold; }
+  .ev-L { color: green; }
+  .ev-U { color: #999; }
+  .ev-S { color: purple; }
+  .ev-D { color: #999; }
+  .ev-- { color: #ccc; }
+
+  /* event log */
+  .log-wrap { max-height: 220px; overflow-y: auto; font-family: monospace; font-size: 12px; }
+  .log-header { display: grid; grid-template-columns: 65px 60px 120px 55px 55px 1fr;
+    gap: 4px; padding: 4px 4px 6px; font-weight: bold; font-size: 11px;
+    background: #eee; border-bottom: 1px solid #ccc; }
+  .log-entry  { display: grid; grid-template-columns: 65px 60px 120px 55px 55px 1fr;
+    gap: 4px; padding: 3px 4px; border-bottom: 1px solid #f0f0f0; }
+  .log-entry:hover { background: #f9f9f9; }
+  .col-tid   { color: #0055cc; }
+  .col-state { font-weight: bold; }
+  .col-state.WRITE    { color: green; }
+  .col-state.READ     { color: #0055cc; }
+  .col-state.LOCKED   { color: green; }
+  .col-state.UNLOCKED { color: #999; }
+  .col-state.WAIT_LOCK{ color: orange; }
+  .col-state.WAIT_SEM { color: orange; }
+  .col-state.SEM_ACQUIRED { color: purple; }
+  .col-state.SEM_RELEASED { color: purple; }
+  .col-state.DONE     { color: #999; }
+  .col-note.race      { color: red; font-weight: bold; }
+  .col-note           { color: #666; }
+  .col-time           { color: #999; }
+
+  /* explanation */
+  .explain { background: #fffbe6; border: 1px solid #e6d800; padding: 10px 14px;
+    font-size: 13px; line-height: 1.7; color: #444; margin-bottom: 14px; }
+  .explain strong { color: #222; }
+  .kw { color: purple; font-family: monospace; }
+  .fn { color: #c7500a; font-family: monospace; }
+</style>
+</head>
+<body>
+
+<h1>Race Condition Visualizer</h1>
+<p class="subtitle">Demonstrates race conditions using threads, mutex locks, and semaphores</p>
+
+<!-- Mode -->
+<div class="mode-btns">
+  <button class="mode-btn active" id="pill-unsafe" onclick="setMode(0)">Unsafe (no sync)</button>
+  <button class="mode-btn" id="pill-mutex"  onclick="setMode(1)">Mutex</button>
+  <button class="mode-btn" id="pill-sem"    onclick="setMode(2)">Semaphore</button>
+</div>
+
+<!-- Controls -->
+<div class="box">
+  <h3>Controls</h3>
+  <table class="ctrl-table">
+    <tr>
+      <td>Number of Threads:</td>
+      <td><input type="range" id="ctrl-threads" min="1" max="8" value="4"
+           oninput="document.getElementById('v-threads').textContent=this.value"></td>
+      <td><span class="ctrl-val" id="v-threads">4</span></td>
+    </tr>
+    <tr>
+      <td>Speed (ms per op):</td>
+      <td><input type="range" id="ctrl-speed" min="50" max="1500" value="300" step="50"
+           oninput="document.getElementById('v-speed').textContent=this.value+'ms'"></td>
+      <td><span class="ctrl-val" id="v-speed">300ms</span></td>
+    </tr>
+    <tr>
+      <td>Iterations per thread:</td>
+      <td><input type="range" id="ctrl-iters" min="2" max="10" value="5"
+           oninput="document.getElementById('v-iters').textContent=this.value"></td>
+      <td><span class="ctrl-val" id="v-iters">5</span></td>
+    </tr>
+  </table>
+  <div class="run-btns">
+    <button class="primary" id="btn-run" onclick="runSimulation()">Run</button>
+    <button id="btn-stop" onclick="stopSimulation()" disabled>Stop</button>
+    <button onclick="clearAll()">Clear</button>
+  </div>
+</div>
+
+<!-- Explanation -->
+<div class="explain" id="explain-box">
+  <strong>Mode: Unsafe (no synchronization)</strong><br>
+  Multiple threads read and write the shared counter without any locking.
+  The classic race: Thread A reads <span class="kw">counter=5</span>, Thread B also reads
+  <span class="kw">counter=5</span>, both increment to <span class="kw">6</span>, both write
+  <span class="kw">6</span> — but the correct answer is <span class="kw">7</span>.
+  One increment is lost. This is a <span class="fn">lost update</span> race condition.
+</div>
+
+<!-- Alerts -->
+<div class="alert danger" id="alert-race">
+  WARNING: Race condition detected! Counter is corrupted — threads overwrote each other's writes.
+</div>
+<div class="alert success" id="alert-safe">
+  Safe execution — counter is correct. Synchronization worked.
+</div>
+
+<!-- Stats -->
+<div class="box">
+  <h3>Statistics</h3>
+  <table class="stats-table">
+    <tr>
+      <td>Counter</td><td>Expected</td><td>Race Count</td>
+      <td>Total Events</td><td>Active Threads</td>
+    </tr>
+    <tr>
+      <td><span class="val-info" id="stat-counter">0</span></td>
+      <td><span class="val-info" id="stat-expected">-</span></td>
+      <td><span class="val-good" id="stat-races">0</span></td>
+      <td><span class="val-info" id="stat-events">0</span></td>
+      <td><span class="val-info" id="stat-active">0</span></td>
+    </tr>
+  </table>
+</div>
+
+<!-- Counter display -->
+<div class="box">
+  <h3>Shared Counter</h3>
+  <div>
+    <span class="counter-num" id="big-counter">0</span>
+    <div class="counter-expected">of <span id="expected-label">—</span> expected</div>
+    <div style="font-size:12px;color:#666;margin-top:4px">Progress: <span id="bar-pct">0%</span></div>
+    <div class="progress-bg">
+      <div class="progress-fill race-mode" id="counter-bar" style="width:0%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Thread cards -->
+<div class="box">
+  <h3>Thread Status</h3>
+  <div class="threads-grid" id="threads-grid"></div>
+</div>
+
+<!-- ASCII Timeline -->
+<div class="box">
+  <h3>ASCII Timeline</h3>
+  <div id="ascii-out" style="font-family:monospace;font-size:12px;color:#999">
+    Run a simulation to see the timeline...
+  </div>
+</div>
+
+<!-- Event Log -->
+<div class="box">
+  <h3>Event Log</h3>
+  <div class="log-header">
+    <span>Time</span><span>Thread</span><span>State</span>
+    <span>Before</span><span>After</span><span>Note</span>
+  </div>
+  <div class="log-wrap">
+    <div id="event-log"></div>
+  </div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────
+let mode = 0;
+let simRunning = false;
+let simInterval = null;
+let allEvents = [];
+let threadStates = {};
+let sharedCounter = 0;
+let raceCount = 0;
+let eventCount = 0;
+let doneCount = 0;
+let numThreads = 4;
+let numIters = 5;
+let speedMs = 300;
+let timelines = {};
+
+const modeColors = ['race-mode', 'mutex-mode', 'sem-mode'];
+
+let mutexHolder = -1;
+let semCount = 1;
+let mutexQueue = [];
+let semQueue = [];
+let threadData = {};
+
+function setMode(m) {
+  mode = m;
+  ['pill-unsafe','pill-mutex','pill-sem'].forEach((id,i) => {
+    document.getElementById(id).className = 'mode-btn' + (i===m ? ' active' : '');
+  });
+
+  const bar = document.getElementById('counter-bar');
+  bar.className = 'progress-fill ' + modeColors[m];
+
+  const explains = [
+    `<strong>Mode: Unsafe (no synchronization)</strong><br>
+    Multiple threads read and write the shared counter without any locking.
+    The classic race: Thread A reads <span class="kw">counter=5</span>, Thread B also reads
+    <span class="kw">counter=5</span>, both increment to <span class="kw">6</span>, both write
+    <span class="kw">6</span> — but the correct answer is <span class="kw">7</span>.
+    One increment is lost. This is a <span class="fn">lost update</span> race condition.`,
+
+    `<strong>Mode: Mutex (mutual exclusion)</strong><br>
+    A <span class="kw">std::mutex</span> ensures only one thread enters the critical section at a time.
+    When Thread A calls <span class="fn">mtx.lock()</span>, all other threads block at their own
+    <span class="fn">lock()</span> calls until A calls <span class="fn">mtx.unlock()</span>.
+    This serializes writes — no races, but threads wait.`,
+
+    `<strong>Mode: Semaphore</strong><br>
+    A <span class="kw">sem_t</span> (POSIX binary semaphore, initialized to 1) works like a mutex here.
+    Threads call <span class="fn">sem_wait()</span> to decrement (blocks if 0) and
+    <span class="fn">sem_post()</span> to increment (signals a waiting thread).
+    Semaphores are more general — a counting semaphore can allow N concurrent accesses.`
+  ];
+  document.getElementById('explain-box').innerHTML = explains[m];
+}
+
+function initThreads() {
+  numThreads = parseInt(document.getElementById('ctrl-threads').value);
+  numIters   = parseInt(document.getElementById('ctrl-iters').value);
+  speedMs    = parseInt(document.getElementById('ctrl-speed').value);
+
+  sharedCounter = 0;
+  raceCount = 0;
+  eventCount = 0;
+  doneCount = 0;
+  allEvents = [];
+  timelines = {};
+  mutexHolder = -1;
+  semCount = 1;
+  mutexQueue = [];
+  semQueue = [];
+  threadData = {};
+
+  document.getElementById('stat-expected').textContent = numThreads * numIters;
+  document.getElementById('expected-label').textContent = numThreads * numIters;
+  document.getElementById('stat-races').textContent = '0';
+  document.getElementById('stat-races').className = 'val-good';
+  document.getElementById('alert-race').classList.remove('visible');
+  document.getElementById('alert-safe').classList.remove('visible');
+  document.getElementById('ascii-out').textContent = 'Running...';
+
+  for (let tid = 0; tid < numThreads; tid++) {
+    threadData[tid] = { itersLeft: numIters, phase: 'READ', localValue: 0,
+      delay: 0, writes: 0, reads: 0, races: 0 };
+    timelines[tid] = [];
+    threadStates[tid] = { state: 'IDLE', before: 0, after: 0, note: '' };
+  }
+
+  buildThreadGrid();
+}
+
+function tick() {
+  if (!simRunning) return;
+  let anyActive = false;
+  for (let tid = 0; tid < numThreads; tid++) {
+    const td = threadData[tid];
+    if (td.phase === 'DONE') continue;
+    anyActive = true;
+    if (Math.random() < 0.3) continue;
+    stepThread(tid, td);
+  }
+  if (!anyActive) { finishSimulation(); return; }
+  updateStats();
+  renderASCII();
+}
+
+function stepThread(tid, td) {
+  if (mode === 0) stepUnsafe(tid, td);
+  else if (mode === 1) stepMutex(tid, td);
+  else stepSemaphore(tid, td);
+}
+
+function stepUnsafe(tid, td) {
+  if (td.phase === 'READ') {
+    td.localValue = sharedCounter;
+    td.reads++;
+    emitEvent(tid, 'READ', sharedCounter, sharedCounter, 'reading counter');
+    timelines[tid].push('R');
+    td.phase = 'WRITE';
+  } else if (td.phase === 'WRITE') {
+    const before = sharedCounter;
+    td.localValue++;
+    const expected = before + 1;
+    sharedCounter = td.localValue;
+    const isRace = (sharedCounter !== expected);
+    const note = isRace ? 'RACE DETECTED' : 'ok';
+    if (isRace) { raceCount++; td.races++; }
+    emitEvent(tid, 'WRITE', before, sharedCounter, note);
+    timelines[tid].push(isRace ? 'X' : 'W');
+    td.writes++;
+    td.itersLeft--;
+    td.phase = td.itersLeft > 0 ? 'READ' : 'DONE_STEP';
+    if (td.phase === 'DONE_STEP') {
+      emitEvent(tid, 'DONE', sharedCounter, sharedCounter, 'thread finished');
+      timelines[tid].push('D');
+      td.phase = 'DONE';
+      doneCount++;
+    }
+  }
+}
+
+function stepMutex(tid, td) {
+  if (td.phase === 'READ') {
+    emitEvent(tid, 'WAIT_LOCK', sharedCounter, sharedCounter, 'waiting for mutex');
+    timelines[tid].push('-');
+    td.phase = 'WAIT';
+    if (!mutexQueue.includes(tid)) mutexQueue.push(tid);
+  } else if (td.phase === 'WAIT') {
+    if (mutexHolder === -1 && mutexQueue[0] === tid) {
+      mutexHolder = tid;
+      mutexQueue.shift();
+      emitEvent(tid, 'LOCKED', sharedCounter, sharedCounter, 'acquired mutex');
+      timelines[tid].push('L');
+      td.phase = 'LOCKED';
+    } else {
+      timelines[tid].push('-');
+    }
+  } else if (td.phase === 'LOCKED') {
+    const before = sharedCounter;
+    sharedCounter++;
+    emitEvent(tid, 'WRITE', before, sharedCounter, 'safe write');
+    timelines[tid].push('W');
+    td.writes++;
+    td.phase = 'UNLOCK';
+  } else if (td.phase === 'UNLOCK') {
+    mutexHolder = -1;
+    emitEvent(tid, 'UNLOCKED', sharedCounter, sharedCounter, 'released mutex');
+    timelines[tid].push('U');
+    td.itersLeft--;
+    td.phase = td.itersLeft > 0 ? 'READ' : 'DONE_STEP';
+    if (td.phase === 'DONE_STEP') {
+      emitEvent(tid, 'DONE', sharedCounter, sharedCounter, 'thread finished');
+      timelines[tid].push('D');
+      td.phase = 'DONE';
+      doneCount++;
+    }
+  }
+}
+
+function stepSemaphore(tid, td) {
+  if (td.phase === 'READ') {
+    emitEvent(tid, 'WAIT_SEM', sharedCounter, sharedCounter, 'waiting on semaphore');
+    timelines[tid].push('-');
+    td.phase = 'WAIT';
+    if (!semQueue.includes(tid)) semQueue.push(tid);
+  } else if (td.phase === 'WAIT') {
+    if (semCount > 0 && semQueue[0] === tid) {
+      semCount--;
+      semQueue.shift();
+      emitEvent(tid, 'SEM_ACQUIRED', sharedCounter, sharedCounter, 'semaphore acquired');
+      timelines[tid].push('S');
+      td.phase = 'LOCKED';
+    } else {
+      timelines[tid].push('-');
+    }
+  } else if (td.phase === 'LOCKED') {
+    const before = sharedCounter;
+    sharedCounter++;
+    emitEvent(tid, 'WRITE', before, sharedCounter, 'safe write via semaphore');
+    timelines[tid].push('W');
+    td.writes++;
+    td.phase = 'UNLOCK';
+  } else if (td.phase === 'UNLOCK') {
+    semCount++;
+    emitEvent(tid, 'SEM_RELEASED', sharedCounter, sharedCounter, 'semaphore released');
+    timelines[tid].push('s');
+    td.itersLeft--;
+    td.phase = td.itersLeft > 0 ? 'READ' : 'DONE_STEP';
+    if (td.phase === 'DONE_STEP') {
+      emitEvent(tid, 'DONE', sharedCounter, sharedCounter, 'thread finished');
+      timelines[tid].push('D');
+      td.phase = 'DONE';
+      doneCount++;
+    }
+  }
+}
+
+function emitEvent(tid, state, before, after, note) {
+  const ts = Date.now();
+  const ev = { tid, state, before, after, note, ts };
+  allEvents.push(ev);
+  eventCount++;
+  threadStates[tid] = ev;
+  updateThreadCard(tid, ev);
+  appendLogEntry(ev);
+  updateCounterDisplay(ev);
+}
+
+function appendLogEntry(ev) {
+  const log = document.getElementById('event-log');
+  const div = document.createElement('div');
+  div.className = 'log-entry';
+  const isRace = ev.note.includes('RACE');
+  const relTime = allEvents.length > 1 ? '+' + (ev.ts - allEvents[0].ts) + 'ms' : '0ms';
+  div.innerHTML = `
+    <span class="col-time">${relTime}</span>
+    <span class="col-tid">T${ev.tid}</span>
+    <span class="col-state ${ev.state}">${ev.state}</span>
+    <span>${ev.before}</span>
+    <span>${ev.after}</span>
+    <span class="col-note ${isRace ? 'race' : ''}">${ev.note}</span>
+  `;
+  log.prepend(div);
+  while (log.children.length > 100) log.removeChild(log.lastChild);
+}
+
+function updateCounterDisplay(ev) {
+  const bigC = document.getElementById('big-counter');
+  bigC.textContent = sharedCounter;
+  const isRace = ev.note.includes('RACE');
+  bigC.className = 'counter-num';
+  if (isRace) bigC.classList.add('race');
+  else if (ev.state === 'WRITE') bigC.classList.add('safe-write');
+
+  const expected = numThreads * numIters;
+  const pct = Math.min(100, Math.round((sharedCounter / expected) * 100));
+  document.getElementById('counter-bar').style.width = pct + '%';
+  document.getElementById('bar-pct').textContent = pct + '%';
+  document.getElementById('stat-counter').textContent = sharedCounter;
+
+  if (isRace) {
+    const bar = document.getElementById('counter-bar');
+    const orig = bar.className;
+    bar.style.background = 'red';
+    setTimeout(() => { bar.style.background = ''; bar.className = 'progress-fill ' + modeColors[mode]; }, 400);
+  }
+}
+
+function updateThreadCard(tid, ev) {
+  const card = document.getElementById('t-card-' + tid);
+  if (!card) return;
+  const stateEl = card.querySelector('.t-state');
+  stateEl.textContent = ev.state;
+  stateEl.className = 't-state ' + ev.state;
+  if (ev.note.includes('RACE')) stateEl.classList.add('race');
+
+  card.className = 'thread-card';
+  if (['WAIT_LOCK','WAIT_SEM'].includes(ev.state)) card.classList.add('waiting');
+  else if (['LOCKED','SEM_ACQUIRED'].includes(ev.state)) card.classList.add('locked');
+  else if (ev.note.includes('RACE')) card.classList.add('racing');
+  else if (ev.state === 'DONE') card.classList.add('done');
+  else card.classList.add('active');
+
+  const td = threadData[tid];
+  const pct = td ? Math.round(((numIters - td.itersLeft) / numIters) * 100) : 0;
+  const fill = card.querySelector('.thread-progress-fill');
+  if (fill) fill.style.width = pct + '%';
+  const noteEl = card.querySelector('.t-note');
+  if (noteEl) noteEl.textContent = ev.note;
+}
+
+function buildThreadGrid() {
+  const grid = document.getElementById('threads-grid');
+  grid.innerHTML = '';
+  for (let tid = 0; tid < numThreads; tid++) {
+    const card = document.createElement('div');
+    card.className = 'thread-card';
+    card.id = 't-card-' + tid;
+    card.innerHTML = `
+      <div style="font-size:11px;color:#999">Thread ${tid}</div>
+      <div class="t-state IDLE">IDLE</div>
+      <div class="t-note" style="font-size:11px;color:#999;margin-top:2px">waiting to start</div>
+      <div class="thread-progress-bg"><div class="thread-progress-fill" style="width:0%"></div></div>
+    `;
+    grid.appendChild(card);
+  }
+}
+
+function updateStats() {
+  const active = Object.values(threadData).filter(t => t.phase !== 'DONE').length;
+  document.getElementById('stat-active').textContent = active;
+  document.getElementById('stat-events').textContent = eventCount;
+  const rEl = document.getElementById('stat-races');
+  rEl.textContent = raceCount;
+  rEl.className = raceCount > 0 ? 'val-bad' : 'val-good';
+}
+
+function renderASCII() {
+  const out = document.getElementById('ascii-out');
+  const WIDTH = 50;
+  let html = '';
+  for (let tid = 0; tid < numThreads; tid++) {
+    const evs = timelines[tid] || [];
+    const recent = evs.slice(-WIDTH);
+    while (recent.length < WIDTH) recent.push('-');
+    const barHtml = recent.map(sym => {
+      const cls = {'R':'ev-R','W':'ev-W','X':'ev-X','L':'ev-L',
+        'U':'ev-U','S':'ev-S','s':'ev-S','D':'ev-D','-':'ev--'}[sym] || 'ev--';
+      return `<span class="${cls}">${sym}</span>`;
+    }).join('');
+    const td = threadData[tid];
+    const info = td ? `W:${td.writes}` + (td.races > 0 ? ` RACES:${td.races}` : '') : '';
+    html += `<div class="ascii-row">
+      <span class="ascii-tid">T${tid}</span>
+      <span class="ascii-bar">${barHtml}</span>
+      <span style="color:#666;font-size:11px;margin-left:8px">${info}</span>
+    </div>`;
+  }
+  html += `<div style="font-size:11px;color:#999;margin-top:8px">
+    R=Read &nbsp; W=Write &nbsp; <span style="color:red">X=Race</span> &nbsp;
+    L=Lock &nbsp; U=Unlock &nbsp; <span style="color:purple">S=Semaphore</span> &nbsp; D=Done
+  </div>`;
+  out.innerHTML = html;
+}
+
+function runSimulation() {
+  if (simRunning) return;
+  simRunning = true;
+  document.getElementById('btn-run').disabled = true;
+  document.getElementById('btn-stop').disabled = false;
+  initThreads();
+  const ms = Math.max(80, parseInt(document.getElementById('ctrl-speed').value) * 0.35);
+  simInterval = setInterval(tick, ms);
+}
+
+function stopSimulation() {
+  simRunning = false;
+  clearInterval(simInterval);
+  document.getElementById('btn-run').disabled = false;
+  document.getElementById('btn-stop').disabled = true;
+}
+
+function finishSimulation() {
+  stopSimulation();
+  const expected = numThreads * numIters;
+  const isCorrect = sharedCounter === expected;
+  document.getElementById('alert-race').classList.toggle('visible', raceCount > 0);
+  document.getElementById('alert-safe').classList.toggle('visible', raceCount === 0);
+  const statC = document.getElementById('stat-counter');
+  statC.textContent = sharedCounter;
+  statC.className = isCorrect ? 'val-good' : 'val-bad';
+  renderASCII();
+  updateStats();
+  for (let tid = 0; tid < numThreads; tid++) {
+    const card = document.getElementById('t-card-' + tid);
+    if (card) {
+      card.className = 'thread-card done';
+      const fill = card.querySelector('.thread-progress-fill');
+      if (fill) fill.style.width = '100%';
+    }
+  }
+}
+
+function clearAll() {
+  stopSimulation();
+  sharedCounter = 0; raceCount = 0; eventCount = 0; doneCount = 0;
+  allEvents = []; timelines = {};
+  document.getElementById('event-log').innerHTML = '';
+  document.getElementById('threads-grid').innerHTML = '';
+  document.getElementById('ascii-out').textContent = 'Run a simulation to see the timeline...';
+  document.getElementById('alert-race').classList.remove('visible');
+  document.getElementById('alert-safe').classList.remove('visible');
+  document.getElementById('big-counter').textContent = '0';
+  document.getElementById('big-counter').className = 'counter-num';
+  document.getElementById('counter-bar').style.width = '0%';
+  document.getElementById('bar-pct').textContent = '0%';
+  document.getElementById('stat-counter').textContent = '0';
+  document.getElementById('stat-counter').className = 'val-info';
+  document.getElementById('stat-expected').textContent = '-';
+  document.getElementById('stat-races').textContent = '0';
+  document.getElementById('stat-races').className = 'val-good';
+  document.getElementById('stat-events').textContent = '0';
+  document.getElementById('stat-active').textContent = '0';
+}
+
+setMode(0);
+</script>
+</body>
+</html>

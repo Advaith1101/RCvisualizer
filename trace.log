@@ -1,0 +1,260 @@
+{"ts":1773664026842321415,"tid":0,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1773664026842501129,"tid":3,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1773664026842591947,"tid":2,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1773664026842659175,"tid":1,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1773664027442968471,"tid":3,"state":"WRITE","before":0,"after":1,"note":"ok"}
+{"ts":1773664027443055218,"tid":0,"state":"WRITE","before":1,"after":1,"note":"RACE DETECTED"}
+{"ts":1773664027443122405,"tid":1,"state":"WRITE","before":1,"after":1,"note":"RACE DETECTED"}
+{"ts":1773664027443176981,"tid":2,"state":"WRITE","before":1,"after":1,"note":"RACE DETECTED"}
+{"ts":1773664027743139306,"tid":3,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1773664027743279739,"tid":1,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1773664027743341132,"tid":2,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1773664027743380892,"tid":0,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1773664028343548443,"tid":3,"state":"WRITE","before":1,"after":2,"note":"ok"}
+{"ts":1773664028343649302,"tid":1,"state":"WRITE","before":2,"after":2,"note":"RACE DETECTED"}
+{"ts":1773664028343700434,"tid":2,"state":"WRITE","before":2,"after":2,"note":"RACE DETECTED"}
+{"ts":1773664028343769601,"tid":0,"state":"WRITE","before":2,"after":2,"note":"RACE DETECTED"}
+{"ts":1773664028643774272,"tid":1,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1773664028643868810,"tid":3,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1773664028643986901,"tid":2,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1773664028644053367,"tid":0,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1773664029244149556,"tid":1,"state":"WRITE","before":2,"after":3,"note":"ok"}
+{"ts":1773664029244290725,"tid":2,"state":"WRITE","before":3,"after":3,"note":"RACE DETECTED"}
+{"ts":1773664029244367764,"tid":3,"state":"WRITE","before":3,"after":3,"note":"RACE DETECTED"}
+{"ts":1773664029244478707,"tid":0,"state":"WRITE","before":3,"after":3,"note":"RACE DETECTED"}
+{"ts":1773664029544318221,"tid":1,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1773664029544417298,"tid":2,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1773664029544483126,"tid":3,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1773664029544582417,"tid":0,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1773664030144741347,"tid":2,"state":"WRITE","before":3,"after":4,"note":"ok"}
+{"ts":1773664030144838397,"tid":0,"state":"WRITE","before":4,"after":4,"note":"RACE DETECTED"}
+{"ts":1773664030144874122,"tid":1,"state":"WRITE","before":4,"after":4,"note":"RACE DETECTED"}
+{"ts":1773664030144929991,"tid":3,"state":"WRITE","before":4,"after":4,"note":"RACE DETECTED"}
+{"ts":1773664030444909432,"tid":2,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1773664030445001483,"tid":0,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1773664030445050851,"tid":3,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1773664030445123856,"tid":1,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1773664031045281807,"tid":2,"state":"WRITE","before":4,"after":5,"note":"ok"}
+{"ts":1773664031045361251,"tid":3,"state":"WRITE","before":5,"after":5,"note":"RACE DETECTED"}
+{"ts":1773664031045435326,"tid":1,"state":"WRITE","before":5,"after":5,"note":"RACE DETECTED"}
+{"ts":1773664031045496127,"tid":0,"state":"WRITE","before":5,"after":5,"note":"RACE DETECTED"}
+{"ts":1773664031345499946,"tid":3,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1773664031345652486,"tid":2,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1773664031345763019,"tid":1,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1773664031345819288,"tid":0,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1773664040978726724,"tid":1,"state":"WAIT_SEM","before":0,"after":0,"note":"waiting on semaphore"}
+{"ts":1773664040978802515,"tid":1,"state":"SEM_ACQUIRED","before":0,"after":0,"note":"semaphore acquired"}
+{"ts":1773664040978829121,"tid":2,"state":"WAIT_SEM","before":0,"after":0,"note":"waiting on semaphore"}
+{"ts":1773664040978879327,"tid":0,"state":"WAIT_SEM","before":0,"after":0,"note":"waiting on semaphore"}
+{"ts":1773664040978912907,"tid":3,"state":"WAIT_SEM","before":0,"after":0,"note":"waiting on semaphore"}
+{"ts":1773664041328930772,"tid":1,"state":"WRITE","before":0,"after":1,"note":"safe write via semaphore"}
+{"ts":1773664041504099110,"tid":1,"state":"SEM_RELEASED","before":1,"after":1,"note":"semaphore released"}
+{"ts":1773664041504249479,"tid":2,"state":"SEM_ACQUIRED","before":1,"after":1,"note":"semaphore acquired"}
+{"ts":1773664041854288289,"tid":1,"state":"WAIT_SEM","before":1,"after":1,"note":"waiting on semaphore"}
+{"ts":1773664041854397107,"tid":2,"state":"WRITE","before":1,"after":2,"note":"safe write via semaphore"}
+{"ts":1773664042029521501,"tid":2,"state":"SEM_RELEASED","before":2,"after":2,"note":"semaphore released"}
+{"ts":1773664042029713629,"tid":0,"state":"SEM_ACQUIRED","before":2,"after":2,"note":"semaphore acquired"}
+{"ts":1773664042379819632,"tid":2,"state":"WAIT_SEM","before":2,"after":2,"note":"waiting on semaphore"}
+{"ts":1773664042379926677,"tid":0,"state":"WRITE","before":2,"after":3,"note":"safe write via semaphore"}
+{"ts":1773664042555053113,"tid":0,"state":"SEM_RELEASED","before":3,"after":3,"note":"semaphore released"}
+{"ts":1773664042555131808,"tid":3,"state":"SEM_ACQUIRED","before":3,"after":3,"note":"semaphore acquired"}
+{"ts":1773664042905239371,"tid":0,"state":"WAIT_SEM","before":3,"after":3,"note":"waiting on semaphore"}
+{"ts":1773664042905432028,"tid":3,"state":"WRITE","before":3,"after":4,"note":"safe write via semaphore"}
+{"ts":1773664043080579436,"tid":3,"state":"SEM_RELEASED","before":4,"after":4,"note":"semaphore released"}
+{"ts":1773664043080675447,"tid":1,"state":"SEM_ACQUIRED","before":4,"after":4,"note":"semaphore acquired"}
+{"ts":1773664043430851706,"tid":3,"state":"WAIT_SEM","before":4,"after":4,"note":"waiting on semaphore"}
+{"ts":1773664043430921567,"tid":1,"state":"WRITE","before":4,"after":5,"note":"safe write via semaphore"}
+{"ts":1773664043606160758,"tid":1,"state":"SEM_RELEASED","before":5,"after":5,"note":"semaphore released"}
+{"ts":1773664043606242118,"tid":2,"state":"SEM_ACQUIRED","before":5,"after":5,"note":"semaphore acquired"}
+{"ts":1773664043956320151,"tid":1,"state":"WAIT_SEM","before":5,"after":5,"note":"waiting on semaphore"}
+{"ts":1773664043956511027,"tid":2,"state":"WRITE","before":5,"after":6,"note":"safe write via semaphore"}
+{"ts":1773664044131777125,"tid":2,"state":"SEM_RELEASED","before":6,"after":6,"note":"semaphore released"}
+{"ts":1773664044131878816,"tid":0,"state":"SEM_ACQUIRED","before":6,"after":6,"note":"semaphore acquired"}
+{"ts":1773664044482034508,"tid":2,"state":"WAIT_SEM","before":6,"after":6,"note":"waiting on semaphore"}
+{"ts":1773664044482124898,"tid":0,"state":"WRITE","before":6,"after":7,"note":"safe write via semaphore"}
+{"ts":1773664044657278968,"tid":0,"state":"SEM_RELEASED","before":7,"after":7,"note":"semaphore released"}
+{"ts":1773664044657359993,"tid":3,"state":"SEM_ACQUIRED","before":7,"after":7,"note":"semaphore acquired"}
+{"ts":1773664045007465795,"tid":3,"state":"WRITE","before":7,"after":8,"note":"safe write via semaphore"}
+{"ts":1773664045007548909,"tid":0,"state":"WAIT_SEM","before":8,"after":8,"note":"waiting on semaphore"}
+{"ts":1773664045182612542,"tid":3,"state":"SEM_RELEASED","before":8,"after":8,"note":"semaphore released"}
+{"ts":1773664045182711054,"tid":1,"state":"SEM_ACQUIRED","before":8,"after":8,"note":"semaphore acquired"}
+{"ts":1773664045532744216,"tid":3,"state":"WAIT_SEM","before":8,"after":8,"note":"waiting on semaphore"}
+{"ts":1773664045532830701,"tid":1,"state":"WRITE","before":8,"after":9,"note":"safe write via semaphore"}
+{"ts":1773664045707978301,"tid":1,"state":"SEM_RELEASED","before":9,"after":9,"note":"semaphore released"}
+{"ts":1773664045708077716,"tid":2,"state":"SEM_ACQUIRED","before":9,"after":9,"note":"semaphore acquired"}
+{"ts":1773664046058151373,"tid":1,"state":"WAIT_SEM","before":9,"after":9,"note":"waiting on semaphore"}
+{"ts":1773664046058340760,"tid":2,"state":"WRITE","before":9,"after":10,"note":"safe write via semaphore"}
+{"ts":1773664046233588707,"tid":2,"state":"SEM_RELEASED","before":10,"after":10,"note":"semaphore released"}
+{"ts":1773664046233688819,"tid":0,"state":"SEM_ACQUIRED","before":10,"after":10,"note":"semaphore acquired"}
+{"ts":1773664046583756937,"tid":2,"state":"WAIT_SEM","before":10,"after":10,"note":"waiting on semaphore"}
+{"ts":1773664046583829748,"tid":0,"state":"WRITE","before":10,"after":11,"note":"safe write via semaphore"}
+{"ts":1773664046759075923,"tid":0,"state":"SEM_RELEASED","before":11,"after":11,"note":"semaphore released"}
+{"ts":1773664046759176054,"tid":3,"state":"SEM_ACQUIRED","before":11,"after":11,"note":"semaphore acquired"}
+{"ts":1773664047109318547,"tid":3,"state":"WRITE","before":11,"after":12,"note":"safe write via semaphore"}
+{"ts":1773664047109503597,"tid":0,"state":"WAIT_SEM","before":12,"after":12,"note":"waiting on semaphore"}
+{"ts":1773664047284618237,"tid":3,"state":"SEM_RELEASED","before":12,"after":12,"note":"semaphore released"}
+{"ts":1773664047284724387,"tid":1,"state":"SEM_ACQUIRED","before":12,"after":12,"note":"semaphore acquired"}
+{"ts":1773664047634759188,"tid":3,"state":"WAIT_SEM","before":12,"after":12,"note":"waiting on semaphore"}
+{"ts":1773664047634940774,"tid":1,"state":"WRITE","before":12,"after":13,"note":"safe write via semaphore"}
+{"ts":1773664047810072505,"tid":1,"state":"SEM_RELEASED","before":13,"after":13,"note":"semaphore released"}
+{"ts":1773664047810224208,"tid":2,"state":"SEM_ACQUIRED","before":13,"after":13,"note":"semaphore acquired"}
+{"ts":1773664048160245317,"tid":1,"state":"WAIT_SEM","before":13,"after":13,"note":"waiting on semaphore"}
+{"ts":1773664048160374298,"tid":2,"state":"WRITE","before":13,"after":14,"note":"safe write via semaphore"}
+{"ts":1773664048335576900,"tid":2,"state":"SEM_RELEASED","before":14,"after":14,"note":"semaphore released"}
+{"ts":1773664048335655086,"tid":0,"state":"SEM_ACQUIRED","before":14,"after":14,"note":"semaphore acquired"}
+{"ts":1773664048685817856,"tid":2,"state":"WAIT_SEM","before":15,"after":15,"note":"waiting on semaphore"}
+{"ts":1773664048685997813,"tid":0,"state":"WRITE","before":14,"after":15,"note":"safe write via semaphore"}
+{"ts":1773664048861253145,"tid":0,"state":"SEM_RELEASED","before":15,"after":15,"note":"semaphore released"}
+{"ts":1773664048861359877,"tid":3,"state":"SEM_ACQUIRED","before":15,"after":15,"note":"semaphore acquired"}
+{"ts":1773664049211502473,"tid":3,"state":"WRITE","before":15,"after":16,"note":"safe write via semaphore"}
+{"ts":1773664049211647401,"tid":0,"state":"WAIT_SEM","before":16,"after":16,"note":"waiting on semaphore"}
+{"ts":1773664049386760201,"tid":3,"state":"SEM_RELEASED","before":16,"after":16,"note":"semaphore released"}
+{"ts":1773664049386843404,"tid":1,"state":"SEM_ACQUIRED","before":16,"after":16,"note":"semaphore acquired"}
+{"ts":1773664049737059652,"tid":3,"state":"WAIT_SEM","before":16,"after":16,"note":"waiting on semaphore"}
+{"ts":1773664049737201534,"tid":1,"state":"WRITE","before":16,"after":17,"note":"safe write via semaphore"}
+{"ts":1773664049912325571,"tid":1,"state":"SEM_RELEASED","before":17,"after":17,"note":"semaphore released"}
+{"ts":1773664049912395391,"tid":2,"state":"SEM_ACQUIRED","before":17,"after":17,"note":"semaphore acquired"}
+{"ts":1773664050262486081,"tid":1,"state":"DONE","before":17,"after":17,"note":"thread finished"}
+{"ts":1773664050262643205,"tid":2,"state":"WRITE","before":17,"after":18,"note":"safe write via semaphore"}
+{"ts":1773664050437811388,"tid":2,"state":"SEM_RELEASED","before":18,"after":18,"note":"semaphore released"}
+{"ts":1773664050437914191,"tid":0,"state":"SEM_ACQUIRED","before":18,"after":18,"note":"semaphore acquired"}
+{"ts":1773664050787995756,"tid":2,"state":"DONE","before":18,"after":18,"note":"thread finished"}
+{"ts":1773664050788195994,"tid":0,"state":"WRITE","before":18,"after":19,"note":"safe write via semaphore"}
+{"ts":1773664050963353253,"tid":0,"state":"SEM_RELEASED","before":19,"after":19,"note":"semaphore released"}
+{"ts":1773664050963424864,"tid":3,"state":"SEM_ACQUIRED","before":19,"after":19,"note":"semaphore acquired"}
+{"ts":1773664051313561706,"tid":3,"state":"WRITE","before":19,"after":20,"note":"safe write via semaphore"}
+{"ts":1773664051313745780,"tid":0,"state":"DONE","before":20,"after":20,"note":"thread finished"}
+{"ts":1773664051488750386,"tid":3,"state":"SEM_RELEASED","before":20,"after":20,"note":"semaphore released"}
+{"ts":1773664051838993499,"tid":3,"state":"DONE","before":20,"after":20,"note":"thread finished"}
+{"ts":1773749024506139885,"tid":2,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1773749024506373970,"tid":0,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1773749024506481027,"tid":1,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1773749024506556857,"tid":3,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1773749025106780755,"tid":0,"state":"WRITE","before":0,"after":1,"note":"ok"}
+{"ts":1773749025106866285,"tid":1,"state":"WRITE","before":1,"after":1,"note":"RACE DETECTED"}
+{"ts":1773749025107057889,"tid":2,"state":"WRITE","before":1,"after":1,"note":"RACE DETECTED"}
+{"ts":1773749025107255622,"tid":3,"state":"WRITE","before":1,"after":1,"note":"RACE DETECTED"}
+{"ts":1773749025407053501,"tid":1,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1773749025407160390,"tid":0,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1773749025407306105,"tid":2,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1773749025407365219,"tid":3,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1773749026007655113,"tid":1,"state":"WRITE","before":1,"after":2,"note":"ok"}
+{"ts":1773749026007747278,"tid":0,"state":"WRITE","before":2,"after":2,"note":"RACE DETECTED"}
+{"ts":1773749026007831080,"tid":2,"state":"WRITE","before":2,"after":2,"note":"RACE DETECTED"}
+{"ts":1773749026007876272,"tid":3,"state":"WRITE","before":2,"after":2,"note":"RACE DETECTED"}
+{"ts":1773749026307804246,"tid":1,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1773749026307900206,"tid":0,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1773749026307979870,"tid":2,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1773749026308105497,"tid":3,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1773749026908341231,"tid":1,"state":"WRITE","before":2,"after":3,"note":"ok"}
+{"ts":1773749026908451112,"tid":2,"state":"WRITE","before":3,"after":3,"note":"RACE DETECTED"}
+{"ts":1773749026908540834,"tid":0,"state":"WRITE","before":3,"after":3,"note":"RACE DETECTED"}
+{"ts":1773749026908619076,"tid":3,"state":"WRITE","before":3,"after":3,"note":"RACE DETECTED"}
+{"ts":1773749027208591354,"tid":1,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1773749027208665305,"tid":2,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1773749027208769919,"tid":3,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1773749027208837889,"tid":0,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1773749027809180737,"tid":1,"state":"WRITE","before":3,"after":4,"note":"ok"}
+{"ts":1773749027809273836,"tid":2,"state":"WRITE","before":4,"after":4,"note":"RACE DETECTED"}
+{"ts":1773749027809386292,"tid":0,"state":"WRITE","before":4,"after":4,"note":"RACE DETECTED"}
+{"ts":1773749027809443099,"tid":3,"state":"WRITE","before":4,"after":4,"note":"RACE DETECTED"}
+{"ts":1773749028109361207,"tid":1,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1773749028109485174,"tid":2,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1773749028109578688,"tid":3,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1773749028109706542,"tid":0,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1773749028709969587,"tid":3,"state":"WRITE","before":4,"after":5,"note":"ok"}
+{"ts":1773749028710062576,"tid":0,"state":"WRITE","before":5,"after":5,"note":"RACE DETECTED"}
+{"ts":1773749028710253747,"tid":1,"state":"WRITE","before":5,"after":5,"note":"RACE DETECTED"}
+{"ts":1773749028710320164,"tid":2,"state":"WRITE","before":5,"after":5,"note":"RACE DETECTED"}
+{"ts":1773749029010135450,"tid":3,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1773749029010246758,"tid":0,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1773749029010383657,"tid":1,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1773749029010433659,"tid":2,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1774344680724309671,"tid":1,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1774344680788715474,"tid":0,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1774344680788864697,"tid":2,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1774344680788973389,"tid":3,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1774344681389255002,"tid":1,"state":"WRITE","before":0,"after":1,"note":"ok"}
+{"ts":1774344681389373810,"tid":0,"state":"WRITE","before":1,"after":1,"note":"RACE DETECTED"}
+{"ts":1774344681389464465,"tid":3,"state":"WRITE","before":1,"after":1,"note":"RACE DETECTED"}
+{"ts":1774344681389556002,"tid":2,"state":"WRITE","before":1,"after":1,"note":"RACE DETECTED"}
+{"ts":1774344681689563748,"tid":1,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1774344681689652473,"tid":0,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1774344681689740214,"tid":3,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1774344681689858847,"tid":2,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1774344682290182806,"tid":1,"state":"WRITE","before":1,"after":2,"note":"ok"}
+{"ts":1774344682290320933,"tid":2,"state":"WRITE","before":2,"after":2,"note":"RACE DETECTED"}
+{"ts":1774344682290393133,"tid":3,"state":"WRITE","before":2,"after":2,"note":"RACE DETECTED"}
+{"ts":1774344682290490483,"tid":0,"state":"WRITE","before":2,"after":2,"note":"RACE DETECTED"}
+{"ts":1774344682590503211,"tid":1,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1774344682590604627,"tid":2,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1774344682590655194,"tid":3,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1774344682590751878,"tid":0,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1774344683191280100,"tid":2,"state":"WRITE","before":2,"after":3,"note":"ok"}
+{"ts":1774344683191496097,"tid":1,"state":"WRITE","before":3,"after":3,"note":"RACE DETECTED"}
+{"ts":1774344683191622763,"tid":3,"state":"WRITE","before":3,"after":3,"note":"RACE DETECTED"}
+{"ts":1774344683191747316,"tid":0,"state":"WRITE","before":3,"after":3,"note":"RACE DETECTED"}
+{"ts":1774344683491602995,"tid":2,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1774344683491757102,"tid":1,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1774344683491858219,"tid":0,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1774344683491891648,"tid":3,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1774344684092357499,"tid":3,"state":"WRITE","before":3,"after":4,"note":"ok"}
+{"ts":1774344684092447374,"tid":0,"state":"WRITE","before":4,"after":4,"note":"RACE DETECTED"}
+{"ts":1774344684092606965,"tid":1,"state":"WRITE","before":4,"after":4,"note":"RACE DETECTED"}
+{"ts":1774344684092720434,"tid":2,"state":"WRITE","before":3,"after":4,"note":"ok"}
+{"ts":1774344684392645846,"tid":3,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1774344684392728788,"tid":0,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1774344684392855243,"tid":1,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1774344684393045359,"tid":2,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1774344684993390180,"tid":3,"state":"WRITE","before":5,"after":5,"note":"RACE DETECTED"}
+{"ts":1774344684993588879,"tid":0,"state":"WRITE","before":4,"after":5,"note":"ok"}
+{"ts":1774344684993712404,"tid":2,"state":"WRITE","before":5,"after":5,"note":"RACE DETECTED"}
+{"ts":1774344684993776776,"tid":1,"state":"WRITE","before":5,"after":5,"note":"RACE DETECTED"}
+{"ts":1774344685293669130,"tid":3,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1774344685293751315,"tid":0,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1774344685293843274,"tid":2,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1774344685293953896,"tid":1,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1774344835562794696,"tid":1,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1774344835562942540,"tid":0,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1774344835563038277,"tid":2,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1774344835563103013,"tid":3,"state":"READ","before":0,"after":0,"note":"reading counter"}
+{"ts":1774344836163367048,"tid":1,"state":"WRITE","before":0,"after":1,"note":"ok"}
+{"ts":1774344836163445196,"tid":3,"state":"WRITE","before":1,"after":1,"note":"RACE DETECTED"}
+{"ts":1774344836163558925,"tid":0,"state":"WRITE","before":1,"after":1,"note":"RACE DETECTED"}
+{"ts":1774344836163711110,"tid":2,"state":"WRITE","before":1,"after":1,"note":"RACE DETECTED"}
+{"ts":1774344836463702773,"tid":1,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1774344836463790572,"tid":3,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1774344836463879370,"tid":0,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1774344836464041071,"tid":2,"state":"READ","before":1,"after":1,"note":"reading counter"}
+{"ts":1774344837064306958,"tid":3,"state":"WRITE","before":1,"after":2,"note":"ok"}
+{"ts":1774344837064490240,"tid":1,"state":"WRITE","before":2,"after":2,"note":"RACE DETECTED"}
+{"ts":1774344837064641884,"tid":0,"state":"WRITE","before":2,"after":2,"note":"RACE DETECTED"}
+{"ts":1774344837064729003,"tid":2,"state":"WRITE","before":2,"after":2,"note":"RACE DETECTED"}
+{"ts":1774344837364493890,"tid":3,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1774344837364654307,"tid":1,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1774344837364780181,"tid":0,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1774344837364839193,"tid":2,"state":"READ","before":2,"after":2,"note":"reading counter"}
+{"ts":1774344837965229871,"tid":2,"state":"WRITE","before":2,"after":3,"note":"ok"}
+{"ts":1774344837965333971,"tid":1,"state":"WRITE","before":2,"after":3,"note":"ok"}
+{"ts":1774344837965479558,"tid":3,"state":"WRITE","before":3,"after":3,"note":"RACE DETECTED"}
+{"ts":1774344837965576371,"tid":0,"state":"WRITE","before":3,"after":3,"note":"RACE DETECTED"}
+{"ts":1774344838265546396,"tid":1,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1774344838265644116,"tid":2,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1774344838265746140,"tid":3,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1774344838265873866,"tid":0,"state":"READ","before":3,"after":3,"note":"reading counter"}
+{"ts":1774344838866243601,"tid":1,"state":"WRITE","before":3,"after":4,"note":"ok"}
+{"ts":1774344838866383126,"tid":2,"state":"WRITE","before":3,"after":4,"note":"ok"}
+{"ts":1774344838866476612,"tid":0,"state":"WRITE","before":4,"after":4,"note":"RACE DETECTED"}
+{"ts":1774344838866662707,"tid":3,"state":"WRITE","before":4,"after":4,"note":"RACE DETECTED"}
+{"ts":1774344839166449242,"tid":1,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1774344839166537231,"tid":2,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1774344839166626734,"tid":0,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1774344839166825627,"tid":3,"state":"READ","before":4,"after":4,"note":"reading counter"}
+{"ts":1774344839766978693,"tid":1,"state":"WRITE","before":4,"after":5,"note":"ok"}
+{"ts":1774344839767073039,"tid":2,"state":"WRITE","before":5,"after":5,"note":"RACE DETECTED"}
+{"ts":1774344839767152333,"tid":0,"state":"WRITE","before":5,"after":5,"note":"RACE DETECTED"}
+{"ts":1774344839767326129,"tid":3,"state":"WRITE","before":5,"after":5,"note":"RACE DETECTED"}
+{"ts":1774344840067170518,"tid":1,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1774344840067276971,"tid":2,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1774344840067349631,"tid":0,"state":"DONE","before":5,"after":5,"note":"thread finished"}
+{"ts":1774344840067453172,"tid":3,"state":"DONE","before":5,"after":5,"note":"thread finished"}
